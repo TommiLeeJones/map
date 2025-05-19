@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Полноэкранная Яндекс.Карта</title>
+    <title>Полноэкранная карта</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         /* Критически важные стили */
@@ -13,46 +13,55 @@
             height: 100%;
             overflow: hidden;
             position: fixed;
-            top: 0;
-            left: 0;
         }
         #map-container {
             width: 100%;
-            height: 100%;
+            height: 100vh; /* Важно! */
             position: absolute;
-        }
-        #map-container iframe {
-            width: 100% !important;
-            height: 100% !important;
-            border: none;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
 <body>
-    <!-- Контейнер для карты -->
     <div id="map-container">
-        <!-- Ваш скрипт конструктора с измененными параметрами -->
         <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=100%&amp;height=100%&amp;lang=ru_RU&amp;scroll=true"></script>
     </div>
 
-    <!-- Скрипт для Telegram WebApp -->
+    <!-- Обязательный скрипт для полноэкранного режима -->
     <script>
-        // Автоматическое расширение на весь экран
-        if (typeof Telegram !== 'undefined') {
-            Telegram.WebApp.ready();
-            Telegram.WebApp.expand();
-            
-            // Фикс для iOS (убираем скролл)
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-            
-            // Предотвращаем случайное закрытие
-            Telegram.WebApp.enableClosingConfirmation();
-            
-            // Фикс масштабирования на мобильных
-            const viewport = document.querySelector('meta[name="viewport"]');
-            viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no';
+        // Ждем полной загрузки API карт
+        function waitForYMaps() {
+            if (typeof ymaps !== 'undefined') {
+                initTelegram();
+            } else {
+                setTimeout(waitForYMaps, 100);
+            }
         }
+        
+        function initTelegram() {
+            if (typeof Telegram !== 'undefined') {
+                // 1. Принудительное расширение
+                Telegram.WebApp.expand();
+                
+                // 2. Фикс для iOS
+                document.body.style.height = window.innerHeight + 'px';
+                
+                // 3. Блокируем все скроллы
+                document.documentElement.style.overflow = 'hidden';
+                document.body.scroll = 'no';
+                
+                // 4. Дополнительные меры (для старых версий Telegram)
+                setTimeout(() => {
+                    Telegram.WebApp.expand();
+                    window.scrollTo(0, 0);
+                }, 500);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            waitForYMaps();
+        });
     </script>
 </body>
 </html>
