@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Интерактивная Яндекс.Карта</title>
+    <title>Интерактивная карта из конструктора</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body, html {
@@ -10,42 +10,30 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
-            font-family: Arial, sans-serif;
         }
-        #map {
+        .map-container {
             width: 100%;
             height: 100vh;
+            position: relative;
+        }
+        .map-container iframe {
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div id="map"></div>
+    <div class="map-container">
+        <!-- Ваш скрипт конструктора (МОДИФИЦИРОВАННЫЙ) -->
+        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=100%&amp;height=100%&amp;lang=ru_RU&amp;scroll=true"></script>
+    </div>
 
-    <!-- Подключаем API Яндекс.Карт -->
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=ВАШ_API_КЛЮЧ&lang=ru_RU"></script>
-    
+    <!-- Интеграция с Telegram -->
     <script>
-        // Инициализация карты
-        ymaps.ready(function() {
-            var myMap = new ymaps.Map("map", {
-                center: [55.751574, 37.573856], // Координаты центра (Москва)
-                zoom: 10, // Масштаб
-                controls: ['zoomControl', 'typeSelector'] // Элементы управления
-            });
-            
-            // Добавляем маркер
-            var myPlacemark = new ymaps.Placemark([55.751574, 37.573856], {
-                hintContent: 'Красная площадь',
-                balloonContent: 'Столица России!'
-            });
-            
-            myMap.geoObjects.add(myPlacemark);
-        });
-
-        // Интеграция с Telegram WebApp
         if (typeof Telegram !== 'undefined') {
-            Telegram.WebApp.expand(); // Развернуть на весь экран
-            Telegram.WebApp.enableClosingConfirmation(); // Подтверждение закрытия
+            Telegram.WebApp.expand();
+            Telegram.WebApp.enableClosingConfirmation();
         }
     </script>
 </body>
