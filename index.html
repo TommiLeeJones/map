@@ -1,1 +1,25 @@
-<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=875&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Моя Яндекс.Карта</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; }
+        #map { width: 100%; height: 100vh; }
+    </style>
+</head>
+<body>
+    <!-- Контейнер для карты -->
+    <div id="map"></div>
+
+    <!-- Код из конструктора -->
+   <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=875&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+
+    <!-- Опционально: Развернуть на весь экран в Telegram -->
+    <script>
+        if (typeof Telegram !== 'undefined') {
+            Telegram.WebApp.expand();
+        }
+    </script>
+</body>
+</html>
