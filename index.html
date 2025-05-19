@@ -2,24 +2,53 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Моя Яндекс.Карта</title>
+    <title>Моя Яндекс.Карта в Telegram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; }
-        #map { width: 100%; height: 100vh; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
-    <!-- Контейнер для карты -->
     <div id="map"></div>
 
-    <!-- Код из конструктора -->
-    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=481&amp;height=435&amp;lang=ru_RU&amp;scroll=true"></script>
+    <!-- Ваш код из конструктора Яндекс.Карт -->
+    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=100%&amp;height=100%&amp;lang=ru_RU&amp;scroll=true"></script>
 
-    <!-- Опционально: Развернуть на весь экран в Telegram -->
+    <!-- Интеграция с Telegram WebApp -->
     <script>
-        if (typeof Telegram !== 'undefined') {
-            Telegram.WebApp.expand();
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Развернуть на весь экран в Telegram
+            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+                Telegram.WebApp.expand();
+                Telegram.WebApp.enableClosingConfirmation();
+                
+                // Опционально: Отправка данных в бота
+                Telegram.WebApp.onEvent('viewportChanged', function() {
+                    Telegram.WebApp.MainButton.setText("Готово").show().onClick(function() {
+                        Telegram.WebApp.sendData("Данные карты");
+                        Telegram.WebApp.close();
+                    });
+                });
+            }
+            
+            // Для теста вне Telegram
+            else {
+                console.log("Открыто вне Telegram");
+            }
+        });
     </script>
 </body>
 </html>
