@@ -2,21 +2,26 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Интерактивная карта из конструктора</title>
+    <title>Полноэкранная Яндекс.Карта</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
+        /* Критически важные стили */
         body, html {
             margin: 0;
             padding: 0;
+            width: 100%;
             height: 100%;
             overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
-        .map-container {
+        #map-container {
             width: 100%;
-            height: 100vh;
-            position: relative;
+            height: 100%;
+            position: absolute;
         }
-        .map-container iframe {
+        #map-container iframe {
             width: 100% !important;
             height: 100% !important;
             border: none;
@@ -24,16 +29,29 @@
     </style>
 </head>
 <body>
-    <div class="map-container">
-        <!-- Ваш скрипт конструктора (МОДИФИЦИРОВАННЫЙ) -->
+    <!-- Контейнер для карты -->
+    <div id="map-container">
+        <!-- Ваш скрипт конструктора с измененными параметрами -->
         <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af67646dab2fe0ffa1f7234638b60e93bd3288629aaf996c24fc765ad45beb59b&amp;width=100%&amp;height=100%&amp;lang=ru_RU&amp;scroll=true"></script>
     </div>
 
-    <!-- Интеграция с Telegram -->
+    <!-- Скрипт для Telegram WebApp -->
     <script>
+        // Автоматическое расширение на весь экран
         if (typeof Telegram !== 'undefined') {
+            Telegram.WebApp.ready();
             Telegram.WebApp.expand();
+            
+            // Фикс для iOS (убираем скролл)
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Предотвращаем случайное закрытие
             Telegram.WebApp.enableClosingConfirmation();
+            
+            // Фикс масштабирования на мобильных
+            const viewport = document.querySelector('meta[name="viewport"]');
+            viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no';
         }
     </script>
 </body>
